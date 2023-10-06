@@ -16,7 +16,7 @@ public class Categorias {
     private long id;
 
     @NotBlank(message = "A atributo tipo é obrigatório")
-    @Size(min = 3, max = 1000, message = " O atributo tipo deve conter no mínimo 3 caracteres e no máximo 1000 caracteres")
+    @Size(min = 2, max = 1000, message = " O atributo tipo deve conter no mínimo 2 caracteres e no máximo 1000 caracteres")
     private String tipo;
 
 
