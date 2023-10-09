@@ -29,8 +29,8 @@ public class Produtos {
     @Positive(message = "O valor deve ser maior do que zero!")
     private BigDecimal valor;
 
-    @NotBlank(message = "O atributo quantidade do produto é obrigatório")
-    private Long quantidade;
+    @NotNull(message = "O atributo quantidade do produto é obrigatório")
+    private Integer quantidade;
 
     @Size(min = 5,max = 255)
     private String foto;
@@ -39,11 +39,11 @@ public class Produtos {
     private String vendedor;
 
     @ManyToOne
-    @JsonIgnoreProperties("Categorias")
+    @JsonIgnoreProperties("produtos")
     private Categorias categorias;
 
     @ManyToOne
-    @JsonIgnoreProperties("Produtos")
+    @JsonIgnoreProperties("produtos")
     private Usuario usuario;
 
     public Long getId() {
@@ -78,11 +78,11 @@ public class Produtos {
         this.valor = valor;
     }
 
-    public Long getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Long quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 

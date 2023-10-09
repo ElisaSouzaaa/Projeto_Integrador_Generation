@@ -1,13 +1,12 @@
 package com.agreenfood.agreenfood.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -36,17 +35,18 @@ public class Usuario {
     @Column(unique = true)
     private String docIdentificador;
 
-    @NotBlank(message = "O atributo CEP é obrigatório")
-    @Size(min = 8, max = 20, message = "O atributo identificador deve conter no mínimo 8 caractéres, e no máximo 20")
-    private Integer cep;
+    @NotNull(message = "O atributo CEP é obrigatório")
+    //@Size(min = 8, max = 20, message = "O atributo identificador deve conter no mínimo 8 caractéres, e no máximo 20")
+    private Long cep;
 
     @NotBlank(message = "O atributo número residencial é obrigatório")
     @Size(min = 1, max = 20, message = "O atributo número residencial deve conter no mínimo 1 caractéres, e no máximo 20")
     private String numeroResidencial;
 
-    @NotBlank(message = "O atributo data nascimento é obrigatório")
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @NotNull(message = "O atributo data nascimento é obrigatório")
     @Past
-    private LocalDate dataNascimento;
+    private Date dataNascimento;
 
     private String complemento;
 
@@ -87,11 +87,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public LocalDate getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -103,11 +103,11 @@ public class Usuario {
         this.docIdentificador = docIdentificador;
     }
 
-    public Integer getCep() {
+    public Long getCep() {
         return cep;
     }
 
-    public void setCep(Integer cep) {
+    public void setCep(Long cep) {
         this.cep = cep;
     }
 
