@@ -2,10 +2,7 @@ package com.agreenfood.agreenfood.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,14 +18,14 @@ public class Usuario {
     @Size(min = 10, max = 100, message = "O atributo nome completo deve conter no mínimo 05 caractéres, e no máximo 100")
     private String nomeCompleto;
 
-    @NotBlank(message = "O atributo email é obrigatório")
-    @Size(min = 10, max = 1000, message = "O atributo email deve conter no mínimo 10 caractéres, e no máximo 1000")
+    @NotBlank(message = "O atributo usuário é obrigatório")
+    @Size(min = 10, max = 1000, message = "O atributo usuário deve conter no mínimo 10 caractéres, e no máximo 1000")
     @Email
     @Column(unique = true)
-    private String email;
+    private String usuario;
 
     @NotBlank(message = "O atributo senha é obrigatório")
-    @Size(min = 8, max = 50, message = "O atributo senha deve conter no mínimo 8 caractéres, e no máximo 50")
+    @Size(min = 8, message = "O atributo senha deve conter no mínimo 8 caractéres, e no máximo 50")
     private String senha;
 
     @NotBlank(message = "O atributo identificador é obrigatório")
@@ -36,15 +33,14 @@ public class Usuario {
     @Column(unique = true)
     private String docIdentificador;
 
-    @NotBlank(message = "O atributo CEP é obrigatório")
-    @Size(min = 8, max = 20, message = "O atributo identificador deve conter no mínimo 8 caractéres, e no máximo 20")
-    private Integer cep;
+    @NotNull(message = "O atributo CEP é obrigatório")
+    private Long cep;
 
     @NotBlank(message = "O atributo número residencial é obrigatório")
     @Size(min = 1, max = 20, message = "O atributo número residencial deve conter no mínimo 1 caractéres, e no máximo 20")
     private String numeroResidencial;
 
-    @NotBlank(message = "O atributo data nascimento é obrigatório")
+    @NotNull(message = "O atributo data nascimento é obrigatório")
     @Past
     private LocalDate dataNascimento;
 
@@ -79,12 +75,12 @@ public class Usuario {
         this.nomeCompleto = nomeCompleto;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public LocalDate getDataNascimento() {
@@ -103,11 +99,11 @@ public class Usuario {
         this.docIdentificador = docIdentificador;
     }
 
-    public Integer getCep() {
+    public Long getCep() {
         return cep;
     }
 
-    public void setCep(Integer cep) {
+    public void setCep(Long cep) {
         this.cep = cep;
     }
 
