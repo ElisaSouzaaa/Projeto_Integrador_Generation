@@ -1,8 +1,9 @@
 package com.agreenfood.agreenfood.controller;
 
-
 import com.agreenfood.agreenfood.model.Usuario;
+import com.agreenfood.agreenfood.model.UsuarioLogin;
 import com.agreenfood.agreenfood.repository.UsuarioRepository;
+import com.agreenfood.agreenfood.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ import java.util.Optional;
 @RequestMapping("/usuario")
 @CrossOrigin(allowedHeaders = "*", origins = "*")
 public class UsuarioController {
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -38,28 +42,27 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioRepository.findByNomeCompletoContainingIgnoreCase(nomeCompleto));
     }
 
-    @PostMapping
-    public ResponseEntity<Usuario> post(@Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepository.save(usuario));
+
+    @PostMapping("/logar")
+    public ResponseEntity<UsuarioLogin> autenticarUsuario(@RequestBody Optional<UsuarioLogin> usuarioLogin) {
+        return usuarioService.autenticarUsuario(usuarioLogin)
+                .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
-    @PutMapping
-    public ResponseEntity<Usuario>put(@Valid @RequestBody Usuario usuario) {
-        return usuarioRepository.findById(usuario.getId())
-                .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(usuarioRepository.save(usuario)))
+    @PostMapping("/cadastrar")
+    public ResponseEntity<Usuario> postUsuario(@Valid @RequestBody Usuario usuario) {
+        return usuarioService.cadastrarUsuario(usuario)
+                .map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
+                .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+    }
+
+    @PutMapping("/atualizar")
+    public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
+        return usuarioService.atualizarUsuario(usuario)
+                .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        if(usuario.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        usuarioRepository.deleteById(id);
-    }
-
-
 }
 
 
