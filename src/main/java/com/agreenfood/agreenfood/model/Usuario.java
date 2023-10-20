@@ -1,11 +1,12 @@
 package com.agreenfood.agreenfood.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
 import java.time.LocalDate;
 import java.util.List;
+
 
 @Entity
 @Table(name = "tb_usuario")
@@ -18,14 +19,15 @@ public class Usuario {
     @Size(min = 10, max = 100, message = "O atributo nome completo deve conter no mínimo 05 caractéres, e no máximo 100")
     private String nomeCompleto;
 
-    @NotBlank(message = "O atributo usuário é obrigatório")
-    @Size(min = 10, max = 1000, message = "O atributo usuário deve conter no mínimo 10 caractéres, e no máximo 1000")
-    @Email
+    @Schema(example = "email@email.com.br")
+    @NotNull(message = "O Atributo Usuário é Obrigatório!")
+    @Size(min = 5, max = 1000, message = "O atributo usuário deve conter no mínimo 10 caractéres, e no máximo 1000")
+    @Email(message = "O Atributo Usuário deve ser um email válido!")
     @Column(unique = true)
     private String usuario;
 
     @NotBlank(message = "O atributo senha é obrigatório")
-    @Size(min = 8, message = "O atributo senha deve conter no mínimo 8 caractéres, e no máximo 50")
+    @Size(min = 8, message = "O atributo senha deve conter no mínimo 8 caractéres")
     private String senha;
 
     @NotBlank(message = "O atributo identificador é obrigatório")
@@ -49,6 +51,8 @@ public class Usuario {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("usuario")
     private List<Produtos> produtos;
+
+
 
 
     public List<Produtos> getProdutos() {
